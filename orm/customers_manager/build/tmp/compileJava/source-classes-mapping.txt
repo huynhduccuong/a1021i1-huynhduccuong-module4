@@ -2,8 +2,8 @@ codegym/service/CustomerService.java
  codegym.service.CustomerService
 codegym/service/CustomerServiceImpl.java
  codegym.service.CustomerServiceImpl
-codegym/controller/CustomerController.java
- codegym.controller.CustomerController
+codegym/config/AppInitializer.java
+ codegym.config.AppInitializer
 codegym/repository/CustomerRepository.java
  codegym.repository.CustomerRepository
 codegym/model/Customer.java
@@ -12,5 +12,5 @@ codegym/repository/CustomerRepositoryImpl.java
  codegym.repository.CustomerRepositoryImpl
 codegym/config/ApplicationConfig.java
  codegym.config.ApplicationConfig
-codegym/config/AppInitializer.java
- codegym.config.AppInitializer
+codegym/controller/CustomerController.java
+ codegym.controller.CustomerController

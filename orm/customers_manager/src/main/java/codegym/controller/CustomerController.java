@@ -23,7 +23,7 @@ public class CustomerController {
     }
 
     @PostMapping("create")
-    public String create(@ModelAttribute("customers") Customer cus,Model model){
+    public String create(@ModelAttribute("customer") Customer cus,Model model){
         customerService.save(cus);
         return "redirect:list";
     }
