@@ -27,7 +27,7 @@ public class User {
     @Email (message = "{errorEmail}")
     private String email;
 
-    @Min(value = 18, message = "{>= 18}")
+    @Min(value = 18, message = "{>=18}")
     private int age;
 
     public String getPhoneNumber() {
