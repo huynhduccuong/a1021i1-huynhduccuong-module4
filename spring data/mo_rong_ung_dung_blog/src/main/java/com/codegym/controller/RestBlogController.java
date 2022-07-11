@@ -37,7 +37,24 @@ public class RestBlogController {
         }
         return new ResponseEntity<>(blogs, HttpStatus.OK);
     }
-
+    @GetMapping("/blog/detail/{id}")
+    public ResponseEntity<Blog> blogDetail(@PathVariable Long id) {
+        System.out.println("Fetching Blog with id " + id);
+        Blog blog = blogService.getBlogById(id);
+        if (blog == null) {
+            System.out.println("Blog with id " + id + " not found");
+            return new ResponseEntity<Blog>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Blog>(blog, HttpStatus.OK);
+    }
+    @GetMapping("/category/{id}")
+    public ResponseEntity viewCategory(@PathVariable("id") Category category) {
+        List<Blog> blogs = blogService.findAllByCategory(category);
+        if (blogs.isEmpty()) {
+            return new ResponseEntity<List<Blog>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Blog>>(blogs, HttpStatus.OK);
+    }
 //    @PostMapping
 //    public ResponseEntity<Blog> saveBlog(@RequestBody Blog blog) {
 //        return new ResponseEntity<>(blogService.save(blog), HttpStatus.CREATED);

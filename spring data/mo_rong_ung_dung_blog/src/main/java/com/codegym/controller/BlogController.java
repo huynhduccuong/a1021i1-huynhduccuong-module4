@@ -5,11 +5,13 @@ import com.codegym.model.Category;
 import com.codegym.service.BlogService;
 import com.codegym.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 
@@ -22,6 +24,7 @@ public class BlogController {
     private CategoryService categoryService;
     @ModelAttribute("categories")
     public Iterable<Category> categories(){
+
         return categoryService.findAll();
     }
 
@@ -84,5 +87,15 @@ public class BlogController {
         blogService.deleteBlogById(blog.getId());
         return "redirect:list";
     }
+//    @GetMapping("/search")
+//    public ModelAndView listNameBlogs(@RequestParam("search") Optional<String> s, Pageable pageable){
+//        Page<Blog> blogs = null;
+//        if(s.isPresent()){
+//            blogs = blogService.findByTitleContaining(s.get(), pageable);
+//        }
+//        ModelAndView modelAndView = new ModelAndView("/blog/list");
+//        modelAndView.addObject("blogs", blogs);
+//        return modelAndView;
+//    }
 }
 

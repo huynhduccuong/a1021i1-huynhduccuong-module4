@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<a href="/create-blog">Create new blog</a>
+Search by blog name:
+<input name="s" id="search" type="text"/>
+<input type="submit" value="Search" class="btnModalView"/>
+<br/>
+<h1>Blogs</h1>
+<div class="modal-body" id="list">
+    <table border="1">
+        <tr>
+            <th>Blog name</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <th:block th:each="blog : ${blogs}">
+            <tr>
+                <td th:text="${blog.blogName}"></td>
+                <td th:text="${blog.status}"></td>
+                <td th:text="${blog.category.categoryName}"></td>
+                <td><a th:href="@{/edit-blog/__${blog.blogId}__ }">Edit</a></td>
+                <td><a th:href="@{/delete-blog/__${blog.blogId}__ }">Delete</a></td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+<div>
+    <a th:href="@{'/blogs'(page=${blogs.number - 1})}" th:if="${blogs.hasPrevious()}">Previous</a>
+    <span th:text="${blogs.number + 1}"></span>/<span th:text="${blogs.totalPages}"></span>
+    <a th:href="@{'/blogs'(page=${blogs.number + 1})}" th:if="${blogs.hasNext()}">Next</a>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+            $(".btnModalView").click(function () {
+                let nameSearch = $('#search').val();
+                $.ajax({
+                        type: "GET",
+                        url: "blogsearch?search=" + nameSearch,
+                        dataType: "HTML",
+                        success: function (data) {
+                            $(".modal-body").html(data);
+
+                        }
+                    }
+                )
+            })
+        }
+    )
+
+</script>
+</body>
+
+</html>

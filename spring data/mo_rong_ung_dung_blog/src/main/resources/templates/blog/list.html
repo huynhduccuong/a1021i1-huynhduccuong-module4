@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Blog list</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 <a th:href="@{/blog/create}">Create new Blog</a>
@@ -10,8 +12,9 @@
 <form>
     Search:
     <input name="key_search" type="text"/>
-    <input type="submit" value="Search"/>
+    <input type="submit" value="Search" class="btnView"/>
 </form>
+<div class="modal-body" id="list">
 <table border="1">
     <tr>
         <th>No</th>
@@ -35,9 +38,29 @@
     </th:block>
 </table>
 <div>
+</div>
     <a th:href="@{'list'(page=${blogs.number - 1})}" th:if="${blogs.hasPrevious()}">Previous</a>
     <span th:text="${blogs.number + 1}"></span>/<span th:text="${blogs.totalPages}"></span>
     <a th:href="@{'list'(page=${blogs.number + 1})}" th:if="${blogs.hasNext()}">Next</a>
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+            $(".btnView").click(function () {
+                let nameSearch = $('#search').val();
+                $.ajax({
+                        type: "GET",
+                        url: "search=" + nameSearch,
+                        dataType: "HTML",
+                        success: function (data) {
+                            $(".modal-body").html(data);
+
+                        }
+                    }
+                )
+            })
+        }
+    )
+
+</script>
 </body>
 </html>
