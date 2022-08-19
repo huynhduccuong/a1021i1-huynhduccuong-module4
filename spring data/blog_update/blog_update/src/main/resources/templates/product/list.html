@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+</head>
+<body>
+<h1 style= "text-align: center" +>Trang Chủ</h1><br>
+<form style="margin-left: 50px;" th:action="@{'/product'}" method="get">
+    <input style = "width: 25%; float:left" name="nameSearch" class="form-control" placeholder="Nhập tên"> &nbsp;
+    <input style = "width: 25%; float:left" name="priceSearch" class="form-control" placeholder="Nhập giá"> &nbsp;
+    <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="categoryIdSearch">
+        <option value="" style = "height: 50px;">Chọn mục</option>
+        <option th:each="ctg:${categoryList}" th:value="${ctg.id}" th:text="${ctg.name}">Chọn mục</option>
+    </select>
+    <button type="submit" class="btn btn-outline-success">Tìm Kiếm</button>
+</form> <br>
+    <a th:href="@{/product/create}" style="margin-left: 50px">Thêm mới</a>
+<div style="margin-right: 50px; margin-left: 50px; margin-top: 15px">
+    <table class="table table-stript">
+        <tr style="background: blue">
+            <th>STT</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each="product,status:${products}" style="background: skyblue">
+            <td th:text="${status.index +1}"></td>
+            <td th:text="${product.getName()}"></td>
+            <td th:text="${product.getPrice()}"></td>
+            <td th:text="${product.getCategory().getName()}"></td>
+            <td th:text="${product.getStatus()}"></td>
+            <td>
+                    <a th:href="@{product/edit(id=${product.getId()})}">Edit</a>
+            </td>
+            <td >
+                <button type="button"
+                        th:onclick="|deleteProduct(${product.getId()})|"
+                        class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div style="margin-left: 50px;">
+    <a th:href="@{'/product'(page=${products.number - 1},nameSearch=${nameSearch}, priceSearch = ${priceSearch},categoryId=${categoryIdSearch})}" th:if="${products.hasPrevious()}">Previous</a>
+    <span th:text="${products.number + 1}"></span>/<span th:text="${products.totalPages}"></span>
+    <a th:href="@{'/product'(page=${products.number + 1},nameSearch=${nameSearch}, priceSearch = ${priceSearch},categoryId=${categoryIdSearch})}" th:if="${products.hasNext()}">Next</a>
+</div>
+
+<!-- Modal -->
+<form th:action = "@{/product/delete}" method="get">
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Bạn có chắc chắn muốn xoá sản phẩm này không?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text"  hidden name="idDelete" id="idDelete">
+                    Bạn có muốn xoá sản phẩm có Id : <span id="idD" style="color: #ff0000"></span>?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function deleteProduct(id) {
+        document.getElementById("idD").innerText =id;
+        document.getElementById("idDelete").value =id;
+    }
+</script>
+</body>
+</html>
+</body>
+</html>
